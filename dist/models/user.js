@@ -50,6 +50,22 @@ const userSchema = new mongoose_1.Schema({
     verificationCodeExpiration: {
         type: Date,
     },
+    investments: [
+        {
+            investmentPlanId: {
+                type: mongoose_1.Schema.Types.ObjectId,
+                ref: 'InvestmentPlan',
+            },
+            amount: {
+                type: Number,
+                required: true,
+            },
+            date: {
+                type: Date,
+                default: Date.now,
+            },
+        },
+    ],
 });
 // / Generate an access token for the user
 userSchema.methods.generateAuthToken = function () {

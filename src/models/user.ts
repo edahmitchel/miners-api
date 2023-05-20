@@ -45,6 +45,22 @@ const userSchema = new Schema<IUser>({
     verificationCodeExpiration: {
         type: Date,
     },
+    investments: [
+        {
+            investmentPlanId: {
+                type: Schema.Types.ObjectId,
+                ref: 'InvestmentPlan',
+            },
+            amount: {
+                type: Number,
+                required: true,
+            },
+            date: {
+                type: Date,
+                default: Date.now,
+            },
+        },
+    ],
 
 })
 // / Generate an access token for the user
