@@ -48,13 +48,39 @@ export const deposit = async (req: Request, res: Response) => {
 
 
 // TODO: Implement fetching user deposits logic
-export const getUserDeposits = (req: Request, res: Response) => {
+export const getUserDeposits = async (req: Request, res: Response) => {
     // TODO: Implement fetching user deposits
+    try {
+        // Extract user ID from request parameters
+        const userId = req.params.userId;
+
+        // Fetch user deposits from the database
+        const deposits = await Deposit.find({ userId });
+
+        // Return user deposits
+        res.status(200).json({ userId, deposits });
+    } catch (error) {
+        // Handle any errors that occur during fetching user deposits
+        console.error('Error fetching user deposits:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+
 };
 
 // TODO: Implement fetching all deposits logic
-export const getAllDeposits = (req: Request, res: Response) => {
+export const getAllDeposits = async (req: Request, res: Response) => {
     // TODO: Implement fetching all deposits
+    try {
+
+
+        // Return all withdrawals
+        const deposits = await Deposit.find()
+        res.status(200).json({ deposits });
+    } catch (error) {
+        // Handle any errors that occur during fetching all deposits
+        console.error('Error fetching all deposits:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };
 
 // / TODO: Implement approving a deposit logic
