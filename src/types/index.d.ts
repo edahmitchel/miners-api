@@ -48,8 +48,25 @@ interface IInvestmentPlan extends Document {
     minAmount: number;
     returnPercentage: number;
 }
+interface IMessage {
+    sender: string;
+    content: string;
+    createdAt: Date;
+}
+
+interface IChat extends Document {
+    user: string;
+    admin: string;
+    messages: Message[];
+}
+interface IAdmin extends Document {
+    username: string;
+    email: string;
+    // Additional fields for admin data
+}
+
 
 
 
 // }
-export { IUser, IWithdrawal, IInvestmentPlan, IDeposit }
+export { IUser, IWithdrawal, IInvestmentPlan, IDeposit, IChat, IMessage, IAdmin }

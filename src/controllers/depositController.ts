@@ -135,3 +135,32 @@ export const approveDeposit = async (req: Request, res: Response) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+// TODO: Implement deposit receipt upload logic
+export const uploadDepositReceipt = async (req: Request, res: Response) => {
+    try {
+        // Extract deposit ID from request parameters
+        const { depositId } = req.params;
+
+        // Find the deposit in the database by ID
+        const deposit = await Deposit.findById(depositId);
+
+        if (!deposit) {
+            return res.status(404).json({ error: 'Deposit not found' });
+        }
+
+        // Extract the Cloudinary URL from the request body
+        const { receiptUrl } = req.body;
+
+        // Update the deposit with the receipt URL
+        deposit.upload = receiptUrl;
+        await deposit.save();
+
+        // Return success response
+        res.status(200).json({ message: 'Deposit receipt uploaded successfully' });
+    } catch (error) {
+        // Handle any errors that occur during deposit receipt upload
+        console.error('Error uploading deposit receipt:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+

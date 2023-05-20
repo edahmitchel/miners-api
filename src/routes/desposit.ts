@@ -1,5 +1,5 @@
 import express from 'express';
-import { approveDeposit, deposit, getAllDeposits, getUserDeposits } from '../controllers/depositController';
+import { approveDeposit, deposit, getAllDeposits, getUserDeposits, uploadDepositReceipt } from '../controllers/depositController';
 
 const router = express.Router();
 
@@ -13,5 +13,6 @@ router.put('/:depositId/approve', approveDeposit);
 
 // All deposits route
 router.get('/', getAllDeposits);
+router.post('/:depositId/upload', uploadDepositReceipt);
 
 export default router;
