@@ -15,14 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.renderResetPasswordForm = exports.resetPassword = exports.sendPasswordResetLink = exports.changePassword = exports.verify = exports.sendVerificationCode = exports.login = exports.register = void 0;
 const user_1 = require("../models/user");
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const express_validator_1 = require("express-validator");
 // Import dependencies
 // Register new user
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //   return res.status(400).json({ errors: errors.array() });
-        // }
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         // Extract user data from request body
         const { email, password, firstName, country, lastName, } = req.body;
         console.log(req.body);
@@ -35,7 +36,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const newUser = new user_1.UserModel({
             email,
             password,
-            lastName, firstName
+            lastName, country, firstName
         });
         // Save user to database
         yield newUser.save();
@@ -56,10 +57,10 @@ exports.register = register;
 // User login
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //   return res.status(400).json({ errors: errors.array() });
-        // }
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         // Extract user data from request body
         const { email, password } = req.body;
         console.log(req.body);
@@ -74,6 +75,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(200).json({
             email: user.email,
             isVerified: user.isVerified,
+            lastName: user.lastName, firstName: user.firstName, country: user.country,
             token,
         });
     }
@@ -85,12 +87,12 @@ exports.login = login;
 // Send verification code to user email
 const sendVerificationCode = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //   return res.status(400).json({ errors: errors.array() });
-        // }
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         // Extract user data from request body
-        const { email, residentAddress, stateOfOrigin } = req.body;
+        const { email } = req.body;
         // Check if user exists
         const user = yield user_1.UserModel.findOne({ email });
         if (!user) {
@@ -131,17 +133,17 @@ exports.sendVerificationCode = sendVerificationCode;
 const verify = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, code } = req.body;
     try {
-        // const errors = validationResult(req);
-        // if (!errors.isEmpty()) {
-        //   return res.status(400).json({ errors: errors.array() });
-        // }
+        const errors = (0, express_validator_1.validationResult)(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
         // Check if user exists
         const user = yield user_1.UserModel.findOne({ email });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
         // Check if code matches
-        if (user.verificationCode !== code) {
+        if (user.verificationCode !== Number(code)) {
             return res.status(400).json({ message: "Invalid verification code" });
         }
         // Check if code has expired

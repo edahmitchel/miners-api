@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.approveDeposit = exports.getAllDeposits = exports.getUserDeposits = exports.deposit = void 0;
+exports.uploadDepositReceipt = exports.approveDeposit = exports.getAllDeposits = exports.getUserDeposits = exports.deposit = void 0;
 const deposit_1 = __importDefault(require("../models/deposit"));
 const investment_1 = __importDefault(require("../models/investment"));
 const user_1 = require("../models/user");
@@ -51,14 +51,37 @@ const deposit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.deposit = deposit;
 // TODO: Implement fetching user deposits logic
-const getUserDeposits = (req, res) => {
+const getUserDeposits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // TODO: Implement fetching user deposits
-};
+    try {
+        // Extract user ID from request parameters
+        const userId = req.params.userId;
+        // Fetch user deposits from the database
+        const deposits = yield deposit_1.default.find({ userId });
+        // Return user deposits
+        res.status(200).json({ userId, deposits });
+    }
+    catch (error) {
+        // Handle any errors that occur during fetching user deposits
+        console.error('Error fetching user deposits:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 exports.getUserDeposits = getUserDeposits;
 // TODO: Implement fetching all deposits logic
-const getAllDeposits = (req, res) => {
+const getAllDeposits = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // TODO: Implement fetching all deposits
-};
+    try {
+        // Return all withdrawals
+        const deposits = yield deposit_1.default.find();
+        res.status(200).json({ deposits });
+    }
+    catch (error) {
+        // Handle any errors that occur during fetching all deposits
+        console.error('Error fetching all deposits:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 exports.getAllDeposits = getAllDeposits;
 // / TODO: Implement approving a deposit logic
 const approveDeposit = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -105,3 +128,28 @@ const approveDeposit = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.approveDeposit = approveDeposit;
+// TODO: Implement deposit receipt upload logic
+const uploadDepositReceipt = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Extract deposit ID from request parameters
+        const { depositId } = req.params;
+        // Find the deposit in the database by ID
+        const deposit = yield deposit_1.default.findById(depositId);
+        if (!deposit) {
+            return res.status(404).json({ error: 'Deposit not found' });
+        }
+        // Extract the Cloudinary URL from the request body
+        const { receiptUrl } = req.body;
+        // Update the deposit with the receipt URL
+        deposit.upload = receiptUrl;
+        yield deposit.save();
+        // Return success response
+        res.status(200).json({ message: 'Deposit receipt uploaded successfully' });
+    }
+    catch (error) {
+        // Handle any errors that occur during deposit receipt upload
+        console.error('Error uploading deposit receipt:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+exports.uploadDepositReceipt = uploadDepositReceipt;

@@ -20,15 +20,15 @@ export const getAllInvestmentPlans = async (req: Request, res: Response) => {
 export const createInvestmentPlan = async (req: Request, res: Response) => {
     try {
         // Extract investment plan details from the request body
-        const { name, minimumAmount, description } = req.body;
+        const { name, minAmount, description, returnPercentage } = req.body;
 
         // TODO: Perform validation and business logic for creating an investment plan
 
         // Create a new investment plan in the database
         const newInvestmentPlan = new InvestmentPlan({
             name,
-            minimumAmount,
-            description,
+            minAmount,
+            description, returnPercentage
         });
         await newInvestmentPlan.save();
 
@@ -55,13 +55,14 @@ export const updateInvestmentPlan = async (req: Request, res: Response) => {
         }
 
         // Extract updated details from the request body
-        const { name, minimumAmount, description } = req.body;
+        const { name, minimumAmount, description, returnPercentage } = req.body;
 
         // TODO: Perform validation and business logic for updating an investment plan
 
         // Update the investment plan in the database
         investmentPlan.name = name;
         investmentPlan.minAmount = minimumAmount;
+        investmentPlan.returnPercentage = returnPercentage
         //   investmentPlan.description = description;
         await investmentPlan.save();
 

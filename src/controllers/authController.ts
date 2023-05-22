@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { IUserModel, UserModel } from '../models/user';
 import { IUser } from '../types';
 import nodemailer from 'nodemailer';
+import { validationResult } from 'express-validator';
 
 // Import dependencies
 
@@ -12,10 +13,10 @@ import nodemailer from 'nodemailer';
 // Register new user
 export const register = async (req: Request, res: Response) => {
   try {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     // Extract user data from request body
     const { email, password, firstName, country, lastName, }: IUser = req.body;
     console.log(req.body);
@@ -30,7 +31,7 @@ export const register = async (req: Request, res: Response) => {
     const newUser = new UserModel({
       email,
       password,
-      lastName, firstName
+      lastName, country, firstName
     });
 
     // Save user to database
@@ -56,10 +57,10 @@ export const register = async (req: Request, res: Response) => {
 // User login
 export const login = async (req: Request, res: Response) => {
   try {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     // Extract user data from request body
     const { email, password } = req.body;
     console.log(req.body);
@@ -77,6 +78,7 @@ export const login = async (req: Request, res: Response) => {
     res.status(200).json({
       email: user.email,
       isVerified: user.isVerified,
+      lastName: user.lastName, firstName: user.firstName, country: user.country,
 
 
       token,
@@ -90,12 +92,12 @@ export const login = async (req: Request, res: Response) => {
 // Send verification code to user email
 export const sendVerificationCode = async (req: Request, res: Response) => {
   try {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     // Extract user data from request body
-    const { email, residentAddress, stateOfOrigin } = req.body;
+    const { email } = req.body;
 
     // Check if user exists
     const user = await UserModel.findOne({ email });
@@ -144,10 +146,10 @@ export const verify = async (req: Request, res: Response) => {
   const { email, code } = req.body;
 
   try {
-    // const errors = validationResult(req);
-    // if (!errors.isEmpty()) {
-    //   return res.status(400).json({ errors: errors.array() });
-    // }
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
     // Check if user exists
     const user = await UserModel.findOne({ email });
 
@@ -156,7 +158,7 @@ export const verify = async (req: Request, res: Response) => {
     }
 
     // Check if code matches
-    if (user.verificationCode !== code) {
+    if (user.verificationCode !== Number(code)) {
       return res.status(400).json({ message: "Invalid verification code" });
     }
 

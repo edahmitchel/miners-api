@@ -7,11 +7,11 @@ import express from 'express';
 
 export const authRoutes = Router();
 // const authController = require("../controllers/auth.controller");
-authRoutes.get("/", (req, res) => {
-    return res.json("in auth")
-})
+// authRoutes.get("/", (req, res) => {
+//     return res.json("in auth")
+// })
 authRoutes.post("/login",
-    //  loginValidationRules(),
+    loginValidationRules(),
     login);
 authRoutes.post("/register", registerValidationRules(), register);
 

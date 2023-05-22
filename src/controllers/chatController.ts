@@ -40,7 +40,7 @@ export const createOrAddChat = async (req: Request, res: Response) => {
 }
 
 // Get all chats for a user
-export const allUserChats = async (req: Request, res: Response) => {
+export const allUserChats = async (req: Request, res: Response): Promise<void> => {
     const { userId } = req.params;
 
     try {
@@ -58,5 +58,39 @@ export const allChats = async (req: Request, res: Response) => {
         res.status(200).json(chats);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch user chats' });
+    }
+}
+
+export const sendMessageAsAdmin = async (req: Request, res: Response) => {
+    const { chatId } = req.params;
+    const { content } = req.body;
+    const admin = 'admin'; // Replace 'admin' with the actual username of the admin
+
+    try {
+        // Find the chat by ID
+        const chat: IChat | null = await ChatModel.findById(chatId);
+
+        if (!chat) {
+            return res.status(404).json({ error: 'Chat not found' });
+        }
+
+        // Check if the current user is the admin of the chat
+        if (chat.admin !== admin) {
+            return res.status(403).json({ error: 'You are not authorized to perform this action' });
+        }
+
+        // Add the new message as an admin
+        const message: IMessage = {
+            sender: admin,
+            content,
+            createdAt: new Date(),
+        };
+
+        chat.messages.push(message);
+        await chat.save();
+
+        res.status(201).json(chat);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to add admin message to chat' });
     }
 }

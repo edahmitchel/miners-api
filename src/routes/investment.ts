@@ -4,15 +4,15 @@ import { createInvestmentPlan, deleteInvestmentPlan, getAllInvestmentPlans, upda
 const router = express.Router();
 
 // All investment plans route
-router.get('/investment-plans', getAllInvestmentPlans);
+router.get('/', getAllInvestmentPlans);
 
 // Create an investment plan route
-router.post('/investment-plans', createInvestmentPlan);
+router.post('/', createInvestmentPlan);
 
 // Update an investment plan route
-router.put('/investment-plans/:planId', updateInvestmentPlan);
+router.put('/:planId', updateInvestmentPlan);
 
 // Delete an investment plan route
-router.delete('/investment-plans/:planId', deleteInvestmentPlan);
+router.delete('/:planId', deleteInvestmentPlan);
 
 export default router;

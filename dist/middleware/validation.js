@@ -9,35 +9,35 @@ const loginValidationRules = () => {
 exports.loginValidationRules = loginValidationRules;
 const registerValidationRules = () => {
     return [
-        (0, express_validator_1.body)("email").isEmail().notEmpty(),
-        (0, express_validator_1.body)("password").isLength({ min: 6 }),
-        (0, express_validator_1.body)("fullName").notEmpty(),
+        (0, express_validator_1.body)("email").isEmail().notEmpty().normalizeEmail(),
+        (0, express_validator_1.body)("password").isLength({ min: 6 }).trim(),
+        (0, express_validator_1.body)("country").notEmpty().isString(),
+        (0, express_validator_1.body)("firstName").notEmpty().isString().trim(),
+        (0, express_validator_1.body)("lastName").notEmpty().isString().trim(),
     ];
 };
 exports.registerValidationRules = registerValidationRules;
 const sendVerificationCodeValidationRules = () => {
     return [
-        (0, express_validator_1.body)("email").isEmail().notEmpty(),
-        (0, express_validator_1.body)("residentAddress").notEmpty().isString(),
-        (0, express_validator_1.body)("stateOfOrigin").notEmpty().isString(),
+        (0, express_validator_1.body)("email").isEmail().notEmpty().normalizeEmail(),
     ];
 };
 exports.sendVerificationCodeValidationRules = sendVerificationCodeValidationRules;
 const sendPasswordResetLinkValidationRules = () => {
-    return [(0, express_validator_1.body)("email").isEmail().notEmpty()];
+    return [(0, express_validator_1.body)("email").isEmail().notEmpty().normalizeEmail()];
 };
 exports.sendPasswordResetLinkValidationRules = sendPasswordResetLinkValidationRules;
 const verifyValidationRules = () => {
-    return [(0, express_validator_1.body)("email").notEmpty().isEmail(), (0, express_validator_1.body)("code").notEmpty()];
+    return [(0, express_validator_1.body)("email").notEmpty().isEmail().normalizeEmail(), (0, express_validator_1.body)("code").notEmpty().isNumeric()];
 };
 exports.verifyValidationRules = verifyValidationRules;
 const renderResetPasswordFormValidationRules = () => {
-    return [(0, express_validator_1.query)("email").notEmpty().isEmail(), (0, express_validator_1.query)("token").notEmpty()];
+    return [(0, express_validator_1.query)("email").notEmpty().isEmail(), (0, express_validator_1.query)("token").notEmpty().normalizeEmail()];
 };
 exports.renderResetPasswordFormValidationRules = renderResetPasswordFormValidationRules;
 const resetPasswordValidationRules = () => {
     return [
-        (0, express_validator_1.body)("email").notEmpty().isEmail(),
+        (0, express_validator_1.body)("email").notEmpty().isEmail().normalizeEmail(),
         (0, express_validator_1.body)("token").notEmpty(),
         (0, express_validator_1.body)("newPassword").notEmpty().isLength({ min: 6 }),
     ];

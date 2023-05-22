@@ -7,34 +7,35 @@ const loginValidationRules = () => {
 
 const registerValidationRules = () => {
   return [
-    body("email").isEmail().notEmpty(),
-    body("password").isLength({ min: 6 }),
-    body("fullName").notEmpty(),
+    body("email").isEmail().notEmpty().normalizeEmail(),
+    body("password").isLength({ min: 6 }).trim(),
+    body("country").notEmpty().isString(),
+    body("firstName").notEmpty().isString().trim(),
+    body("lastName").notEmpty().isString().trim(),
   ];
 };
 
 const sendVerificationCodeValidationRules = () => {
   return [
-    body("email").isEmail().notEmpty(),
-    body("residentAddress").notEmpty().isString(),
-    body("stateOfOrigin").notEmpty().isString(),
+    body("email").isEmail().notEmpty().normalizeEmail(),
+
   ];
 };
 const sendPasswordResetLinkValidationRules = () => {
-  return [body("email").isEmail().notEmpty()];
+  return [body("email").isEmail().notEmpty().normalizeEmail()];
 };
 
 const verifyValidationRules = () => {
-  return [body("email").notEmpty().isEmail(), body("code").notEmpty()];
+  return [body("email").notEmpty().isEmail().normalizeEmail(), body("code").notEmpty().isNumeric()];
 };
 
 const renderResetPasswordFormValidationRules = () => {
-  return [query("email").notEmpty().isEmail(), query("token").notEmpty()];
+  return [query("email").notEmpty().isEmail(), query("token").notEmpty().normalizeEmail()];
 };
 
 const resetPasswordValidationRules = () => {
   return [
-    body("email").notEmpty().isEmail(),
+    body("email").notEmpty().isEmail().normalizeEmail(),
     body("token").notEmpty(),
     body("newPassword").notEmpty().isLength({ min: 6 }),
   ];

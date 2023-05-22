@@ -7,13 +7,13 @@ const express_1 = __importDefault(require("express"));
 const withdrawal_1 = require("../controllers/withdrawal");
 const router = express_1.default.Router();
 // Withdrawal request route
-router.post('/withdrawals', withdrawal_1.requestWithdrawal);
+router.post('/', withdrawal_1.requestWithdrawal);
 // User withdrawal history route
-router.get('/withdrawals/:userId', withdrawal_1.getUserWithdrawals);
+router.get('/:userId', withdrawal_1.getUserWithdrawals);
 // All withdrawals route
-router.get('/withdrawals', withdrawal_1.getAllWithdrawals);
+router.get('', withdrawal_1.getAllWithdrawals);
 // Approve withdrawal route
-router.put('/withdrawals/approve/:withdrawalId', withdrawal_1.approveWithdrawal);
+router.put('/approve/:withdrawalId', withdrawal_1.approveWithdrawal);
 // Reject withdrawal route
-router.put('/withdrawals/reject/:withdrawalId', withdrawal_1.rejectWithdrawal);
+router.put('/reject/:withdrawalId', withdrawal_1.rejectWithdrawal);
 exports.default = router;

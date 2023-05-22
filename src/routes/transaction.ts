@@ -4,9 +4,9 @@ import { getAllTransactions, getUserTransactions } from '../controllers/transact
 const router = express.Router();
 
 // User transaction history route
-router.get('/transactions/:userId', getUserTransactions);
+router.get('/:userId', getUserTransactions);
 
 // All transactions route
-router.get('/transactions', getAllTransactions);
+router.get('/', getAllTransactions);
 
 export default router;

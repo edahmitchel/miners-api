@@ -4,18 +4,18 @@ import { approveWithdrawal, getAllWithdrawals, getUserWithdrawals, rejectWithdra
 const router = express.Router();
 
 // Withdrawal request route
-router.post('/withdrawals', requestWithdrawal);
+router.post('/', requestWithdrawal);
 
 // User withdrawal history route
-router.get('/withdrawals/:userId', getUserWithdrawals);
+router.get('/:userId', getUserWithdrawals);
 
 // All withdrawals route
-router.get('/withdrawals', getAllWithdrawals);
+router.get('', getAllWithdrawals);
 
 // Approve withdrawal route
-router.put('/withdrawals/approve/:withdrawalId', approveWithdrawal);
+router.put('/approve/:withdrawalId', approveWithdrawal);
 
 // Reject withdrawal route
-router.put('/withdrawals/reject/:withdrawalId', rejectWithdrawal);
+router.put('/reject/:withdrawalId', rejectWithdrawal);
 
 export default router;

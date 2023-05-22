@@ -67,6 +67,16 @@ const userSchema = new mongoose_1.Schema({
         },
     ],
 });
+// Hash the user's password before saving to the database
+userSchema.pre("save", function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const user = this;
+        if (user.isModified("password")) {
+            user.password = yield bcrypt_1.default.hash(user.password, 8);
+        }
+        next();
+    });
+});
 // / Generate an access token for the user
 userSchema.methods.generateAuthToken = function () {
     return __awaiter(this, void 0, void 0, function* () {

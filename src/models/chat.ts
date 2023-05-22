@@ -12,6 +12,10 @@ const chatSchema: Schema = new Schema({
     user: { type: String, required: true },
     admin: { type: String, required: true },
     messages: [messageSchema],
+    latestMessage: {
+        message: messageSchema
+
+    }
 });
 
 const ChatModel = mongoose.model<IChat>('Chat', chatSchema);

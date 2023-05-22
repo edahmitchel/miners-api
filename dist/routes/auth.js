@@ -6,12 +6,10 @@ const authController_1 = require("../controllers/authController");
 const validation_1 = require("../middleware/validation");
 exports.authRoutes = (0, express_1.Router)();
 // const authController = require("../controllers/auth.controller");
-exports.authRoutes.get("/", (req, res) => {
-    return res.json("in auth");
-});
-exports.authRoutes.post("/login", 
-//  loginValidationRules(),
-authController_1.login);
+// authRoutes.get("/", (req, res) => {
+//     return res.json("in auth")
+// })
+exports.authRoutes.post("/login", (0, validation_1.loginValidationRules)(), authController_1.login);
 exports.authRoutes.post("/register", (0, validation_1.registerValidationRules)(), authController_1.register);
 // Send verification code to user email
 exports.authRoutes.post("/send-verification-code", (0, validation_1.sendVerificationCodeValidationRules)(), authController_1.sendVerificationCode);

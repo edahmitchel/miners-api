@@ -14,4 +14,5 @@ router.get('/:userId', depositController_1.getUserDeposits);
 router.put('/:depositId/approve', depositController_1.approveDeposit);
 // All deposits route
 router.get('/', depositController_1.getAllDeposits);
+router.post('/:depositId/upload', depositController_1.uploadDepositReceipt);
 exports.default = router;

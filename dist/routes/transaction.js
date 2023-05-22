@@ -7,7 +7,7 @@ const express_1 = __importDefault(require("express"));
 const transactionController_1 = require("../controllers/transactionController");
 const router = express_1.default.Router();
 // User transaction history route
-router.get('/transactions/:userId', transactionController_1.getUserTransactions);
+router.get('/:userId', transactionController_1.getUserTransactions);
 // All transactions route
-router.get('/transactions', transactionController_1.getAllTransactions);
+router.get('/', transactionController_1.getAllTransactions);
 exports.default = router;
